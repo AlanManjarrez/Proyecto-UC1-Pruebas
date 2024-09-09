@@ -35,12 +35,8 @@ public class Pedido implements Serializable {
     @Column(name = "estado", nullable = false)
     private Estado estado;
 
-//    @OneToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "id_pedido", referencedColumnName = "id")
-//    private List<Alimento> alimento;
-
-    @Column(name = "cantidad", nullable = false)
-    private String cantidad;
+    @Column(name = "alimento", nullable = false, length = 500)
+    private String alimento;
 
     @Column(name = "fecha", nullable = false)
     @Temporal(TemporalType.DATE)
@@ -49,18 +45,17 @@ public class Pedido implements Serializable {
     public Pedido() {
     }
 
-    public Pedido(Long id, Estado estado,  String cantidad, Calendar fecha) {
+    public Pedido(Long id, Estado estado, String alimento, Calendar fecha) {
         this.id = id;
         this.estado = estado;
-        
-        this.cantidad = cantidad;
+        this.alimento = alimento;
         this.fecha = fecha;
     }
 
-    public Pedido(Estado estado,  String cantidad, Calendar fecha) {
+    public Pedido(Estado estado, String alimento, Calendar fecha) {
         this.estado = estado;
-        
-        this.cantidad = cantidad;
+        this.alimento = alimento;
+
         this.fecha = fecha;
     }
 
@@ -72,20 +67,12 @@ public class Pedido implements Serializable {
         this.estado = estado;
     }
 
-//    public List<Alimento> getAlimento() {
-//        return alimento;
-//    }
-//
-//    public void setAlimento(List<Alimento> alimento) {
-//        this.alimento = alimento;
-//    }
-
-    public String getCantidad() {
-        return cantidad;
+    public String getAlimento() {
+        return alimento;
     }
 
-    public void setCantidad(String cantidad) {
-        this.cantidad = cantidad;
+    public void setAlimento(String alimento) {
+        this.alimento = alimento;
     }
 
     public Calendar getFecha() {
@@ -106,8 +93,7 @@ public class Pedido implements Serializable {
 
     @Override
     public String toString() {
-        return "Pedido{" + "id=" + id + ", estado=" + estado + ", cantidad=" + cantidad + ", fecha=" + fecha + '}';
+        return "Pedido{" + "id=" + id + ", estado=" + estado + ", alimento=" + alimento + ", fecha=" + fecha + '}';
     }
 
-   
 }
