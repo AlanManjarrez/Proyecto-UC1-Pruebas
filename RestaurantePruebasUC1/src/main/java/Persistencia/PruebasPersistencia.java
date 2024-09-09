@@ -20,18 +20,9 @@ public class PruebasPersistencia {
     public static void main(String[] args) {
 
         Calendar fecha = Calendar.getInstance();
-        Pedido pedido = new Pedido(Estado.LISTO, "Hamburguesa 2, Pizza 1, Ensalada 1", fecha);
-
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("conexionPU");
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-
-        entityManager.getTransaction().begin();
-        
-        entityManager.persist(pedido);
-
-        entityManager.getTransaction().commit();
-
-        entityManager.close();
-        entityManagerFactory.close();
+        Pedido pedido3 = new Pedido(Estado.ENTREGADO, "Hamburguesa 8, dudhi 5, Ensalada 1", fecha);
+        pedido3.setId(2L);
+        PedidoDAO p=new PedidoDAO();
+        p.actualizarPedido(pedido3);
     }
 }

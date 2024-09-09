@@ -3,7 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Presentacion;
-
+import DTO.PedidoDTO;
+import DTO.EstadoDTO;
 /**
  *
  * @author uirtis
@@ -36,6 +37,7 @@ public class CrearPedido extends javax.swing.JFrame {
         txtCantidad = new javax.swing.JTextField();
         agregarPedido = new javax.swing.JButton();
         cancelarPedido = new javax.swing.JButton();
+        btnTerminar = new javax.swing.JButton();
 
         jLabel4.setText("jLabel4");
 
@@ -72,8 +74,25 @@ public class CrearPedido extends javax.swing.JFrame {
         cbAlimento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hamburguesa", "Pizza", "Ensalada", "Pasta" }));
 
         agregarPedido.setText("Agregar");
+        agregarPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarPedidoActionPerformed(evt);
+            }
+        });
 
         cancelarPedido.setText("Cancelar");
+        cancelarPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarPedidoActionPerformed(evt);
+            }
+        });
+
+        btnTerminar.setText("Terminar pedido");
+        btnTerminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTerminarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -101,7 +120,9 @@ public class CrearPedido extends javax.swing.JFrame {
                             .addComponent(cbAlimento, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(47, 47, 47))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnTerminar)
+                            .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(139, 139, 139))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -116,11 +137,13 @@ public class CrearPedido extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(agregarPedido)
-                    .addComponent(cancelarPedido))
-                .addGap(39, 39, 39))
+                    .addComponent(cancelarPedido)
+                    .addComponent(agregarPedido))
+                .addGap(18, 18, 18)
+                .addComponent(btnTerminar)
+                .addGap(10, 10, 10))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -137,10 +160,30 @@ public class CrearPedido extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cancelarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarPedidoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cancelarPedidoActionPerformed
+
+    private void agregarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarPedidoActionPerformed
+        Object opcionSeleccion=cbAlimento.getSelectedItem();
+        if (opcionSeleccion!=null && txtCantidad.getText()!=null) {
+            
+        }else{
+            
+        }
+              
+                
+    }//GEN-LAST:event_agregarPedidoActionPerformed
+
+    private void btnTerminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTerminarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnTerminarActionPerformed
+
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregarPedido;
+    private javax.swing.JButton btnTerminar;
     private javax.swing.JButton cancelarPedido;
     private javax.swing.JComboBox<String> cbAlimento;
     private javax.swing.JLabel jLabel1;

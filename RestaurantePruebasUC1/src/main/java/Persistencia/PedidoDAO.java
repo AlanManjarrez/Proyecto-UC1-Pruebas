@@ -16,7 +16,7 @@ import javax.persistence.Persistence;
  */
 public class PedidoDAO {
 
-    public void agregarPedido(Pedido pedido) {
+    public Pedido agregarPedido(Pedido pedido) {
 
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("conexionPU");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -24,14 +24,18 @@ public class PedidoDAO {
             entityManager.getTransaction().begin();
             entityManager.persist(pedido);
             entityManager.getTransaction().commit();
+            return pedido;
         } catch (Exception e) {
             if (entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
             }
             e.printStackTrace();
+        }finally{
+            entityManager.close();
+            entityManagerFactory.close();
         }
-        entityManager.close();
-        entityManagerFactory.close();
+        return null;
+        
     }
 
     public List<Pedido> consultarPedidoFecha(Calendar fecha) {
@@ -40,30 +44,72 @@ public class PedidoDAO {
 
         try {
             entityManager.getTransaction().begin();
-            return entityManager.createQuery("SELECT P FROM pedido P WHERE P.FECHA = :fecha", Pedido.class).getResultList();
+            List<Pedido> resultados = entityManager.createQuery("SELECT P FROM pedidos P WHERE P.fecha = :fecha", Pedido.class)
+            .setParameter("fecha", fecha)
+            .getResultList();
             
+            entityManager.getTransaction().commit(); 
+            return resultados;
         } catch (Exception e) {
-            
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback(); 
+            }
+            e.printStackTrace();
+        }finally{
+            entityManager.close();
+            entityManagerFactory.close();
         }
         return null;
     }
 
-    public void cancelarPedido(Pedido pedido) {
-
+    public Pedido cancelarPedido(Pedido pedido) {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("conexionPU");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             entityManager.getTransaction().begin();
-            entityManager.remove(pedido);
+            
+            Pedido pedidoManaged = entityManager.find(Pedido.class, pedido.getId());
+            entityManager.remove(pedidoManaged);
+            
             entityManager.getTransaction().commit();
-
+            return null;
         } catch (Exception e) {
             if (entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
             }
             e.printStackTrace();
+        } finally {
+          entityManager.close();
+          entityManagerFactory.close();
         }
-        entityManager.close();
-        entityManagerFactory.close();
+        return pedido;
     }
+    
+    public Pedido actualizarPedido(Pedido pedido) {
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("conexionPU");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        try {
+            entityManager.getTransaction().begin();
+
+            Pedido pedidoExistente = entityManager.find(Pedido.class, pedido.getId());
+       
+            entityManager.merge(pedido);
+            entityManager.getTransaction().commit();
+            return pedido;
+
+        } catch (Exception e) {
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback(); 
+            }
+            e.printStackTrace(); 
+        } finally {
+            entityManager.close(); 
+            entityManagerFactory.close(); 
+        }
+        return null; 
+    }
+    
+    
+    
 }
