@@ -5,9 +5,18 @@
 package Persistencia;
 
 /**
- *
+ * Enumeración Estado que representa los diferentes estados posibles de un pedido
+ * en el sistema de dominio. Esta enumeración se utiliza en la capa lógica del negocio
+ * para indicar el estado actual de un pedido.
+ * 
+ * Los estados posibles son:
+ * - PREPARACION: El pedido está en proceso de preparación.
+ * - LISTO: El pedido está listo para ser entregado.
+ * - ENTREGADO: El pedido ha sido entregado al cliente.
+ * 
  * @author uirtis
  */
+
 public enum Estado {
     PREPARACION, 
     LISTO, 
