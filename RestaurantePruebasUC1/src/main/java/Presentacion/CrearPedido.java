@@ -200,6 +200,8 @@ public class CrearPedido extends javax.swing.JFrame {
                     pedido.setAlimento(opcionSeleccion+" "+txtCantidad.getText());
                 }
                 JOptionPane.showMessageDialog(null, "Se ha agregado");
+                txtCantidad.setText(""); 
+                cbAlimento.setSelectedIndex(0);
         }else{
             JOptionPane.showMessageDialog(null, "No ha seleccionado un producto o cantidad");
         }

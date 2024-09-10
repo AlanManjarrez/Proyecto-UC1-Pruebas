@@ -27,6 +27,7 @@ public class Historial extends javax.swing.JFrame {
     public Historial() {
         initComponents();
         control=new Control();
+        jTable1.setDefaultEditor(Object.class, null);
     }
 
     /**

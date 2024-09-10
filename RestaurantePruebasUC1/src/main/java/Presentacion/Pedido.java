@@ -27,6 +27,7 @@ public class Pedido extends javax.swing.JFrame {
         initComponents();
         control=new Control();
         Calendar fecha=Calendar.getInstance();
+        jtable.setDefaultEditor(Object.class, null);
         llenarTabla(jtable,control.consultarPedidos(fecha));
     }
 
@@ -223,6 +224,7 @@ public class Pedido extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "No se ha cancelado");
             }else{
                 JOptionPane.showMessageDialog(null, "Se ha cancelado");
+                actualizarTabla();
             }
         }else{
             JOptionPane.showMessageDialog(null, "No selecciono un pedido");
@@ -243,12 +245,14 @@ public class Pedido extends javax.swing.JFrame {
                     ped=control.actualizarPedido(ped);
                     if (ped!=null) {
                         JOptionPane.showMessageDialog(null, "Se ha cambiado de estado");
+                        actualizarTabla();
                     }
                 }else if (ped.getEstado().equals(EstadoDTO.LISTO)) {
                     ped.setEstado(EstadoDTO.ENTREGADO);
                     ped=control.actualizarPedido(ped);
                     if (ped!=null) {
                         JOptionPane.showMessageDialog(null,"Se ha cambiado de estado");
+                        actualizarTabla();;
                     }
                 }else if (ped.getEstado().equals(EstadoDTO.ENTREGADO)) {
                     JOptionPane.showMessageDialog(null, "Ya se ha entregado no hay mas estados");
@@ -266,31 +270,36 @@ public class Pedido extends javax.swing.JFrame {
     private void llenarTabla(JTable table,List<PedidoDTO> pedidos){
         DefaultTableModel modelo=new DefaultTableModel();
         modelo.addColumn("Número de Pedido");
-        modelo.addColumn("Fecha");
+        modelo.addColumn("Estado");
         modelo.addColumn("Alimento");
         modelo.addColumn("Cantidad");
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        
     
         for (PedidoDTO pedido : pedidos) {
-            Calendar fecha = pedido.getFecha();
-            String fechaFormateada = sdf.format(fecha.getTime());
+            EstadoDTO estado = pedido.getEstado();
             
             String[] alimentos = pedido.getAlimento().split(", ");
             for (String alimento : alimentos) {
-                String[] partes = alimento.split(" "); // Separar nombre y cantidad
-                String nombre = partes[0]; // Nombre del alimento
-                String cantidad = partes[1]; // Cantidad del alimento
+                String[] partes = alimento.split(" "); 
+                String nombre = partes[0]; 
+                String cantidad = partes[1]; 
 
                 // Agregar fila al modelo
                 modelo.addRow(new Object[]{
                     pedido.getId(),
-                    fechaFormateada,
+                    estado.toString(),
                     nombre,
                     cantidad
                 });
             }
         }
         table.setModel(modelo);
+    }
+    
+    private void actualizarTabla() {
+        Calendar fecha = Calendar.getInstance(); 
+        List<PedidoDTO> pedidos = control.consultarPedidos(fecha); 
+        llenarTabla(jtable, pedidos);
     }
     /**
      * @param args the command line arguments

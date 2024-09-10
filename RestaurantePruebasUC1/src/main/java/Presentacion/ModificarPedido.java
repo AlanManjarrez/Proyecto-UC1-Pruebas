@@ -279,31 +279,40 @@ public class ModificarPedido extends javax.swing.JFrame {
         String alimentoSeleccionado = (String) cbAlimento.getSelectedItem();
 
         if (alimentoSeleccionado != null) {
-           
             String cadenaAlimentos = ped.getAlimento();
             String[] alimentos = cadenaAlimentos.split(", ");
 
-            if (alimentos.length <= 1) {
-                JOptionPane.showMessageDialog(this, "No se puede eliminar el único alimento en la lista.");
-                return; 
+            
+            if (alimentos.length == 1 && alimentos[0].startsWith(alimentoSeleccionado + " ")) {
+                JOptionPane.showMessageDialog(this, "No se puede eliminar el único alimento del pedido.");
+                return;
             }
 
             StringBuilder nuevaCadena = new StringBuilder();
+            boolean encontrado = false; 
 
             for (String alimento : alimentos) {
                 if (!alimento.startsWith(alimentoSeleccionado + " ")) { 
                     nuevaCadena.append(alimento).append(", ");
+                } else {
+                    encontrado = true; 
                 }
             }
 
+            if (!encontrado) {
+                JOptionPane.showMessageDialog(this, "El alimento seleccionado no se encuentra en la lista.");
+                return;
+            }
+
             if (nuevaCadena.length() > 0) {
-                nuevaCadena.setLength(nuevaCadena.length() - 2);
+                nuevaCadena.setLength(nuevaCadena.length() - 2); 
             }
 
             ped.setAlimento(nuevaCadena.toString());
-            control.actualizarPedido(ped);
+            
+
             JOptionPane.showMessageDialog(this, "Alimento eliminado con éxito.");
-            actualizarComboBox();
+            actualizarComboBox(); 
         } else {
             JOptionPane.showMessageDialog(this, "Por favor, selecciona un alimento para eliminar.");
         }
@@ -341,14 +350,16 @@ public class ModificarPedido extends javax.swing.JFrame {
     }
    
     private void actualizarComboBox() {
-        
+        cbAlimento.removeAllItems(); 
         String cadenaAlimentos = ped.getAlimento();
         String[] alimentos = cadenaAlimentos.split(", ");
 
-        cbAlimento.removeAllItems();
-
         for (String alimento : alimentos) {
-            cbAlimento.addItem(alimento);
+            String[] partes = alimento.split(" ");
+            if (partes.length == 2) {
+                String nombre = partes[0];
+                cbAlimento.addItem(nombre); 
+            }
         }
     }
 
