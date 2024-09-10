@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Presentacion;
+import DTO.EstadoDTO;
 import Negocio.Control;
 import DTO.PedidoDTO;
 import java.text.SimpleDateFormat;
@@ -46,7 +47,7 @@ public class Pedido extends javax.swing.JFrame {
         crearPedido = new javax.swing.JButton();
         modificarPedido = new javax.swing.JButton();
         cancelarPedido = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnCambiarEstado = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -111,10 +112,10 @@ public class Pedido extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Cambiar estado");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnCambiarEstado.setText("Cambiar estado");
+        btnCambiarEstado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnCambiarEstadoActionPerformed(evt);
             }
         });
 
@@ -131,43 +132,41 @@ public class Pedido extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGap(122, 122, 122)
+                .addComponent(crearPedido)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(modificarPedido)
+                .addGap(107, 107, 107)
+                .addComponent(cancelarPedido)
+                .addGap(92, 92, 92))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(61, 61, 61)
-                        .addComponent(crearPedido)
-                        .addGap(157, 157, 157)
-                        .addComponent(modificarPedido)
-                        .addGap(154, 154, 154)
-                        .addComponent(cancelarPedido))
+                        .addGap(216, 216, 216)
+                        .addComponent(btnCambiarEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(97, 97, 97)
+                        .addComponent(jButton2))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(47, 47, 47)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(62, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 661, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)
-                        .addGap(57, 57, 57)
-                        .addComponent(jButton1)
-                        .addGap(83, 83, 83)))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(crearPedido)
                     .addComponent(modificarPedido)
                     .addComponent(cancelarPedido))
-                .addGap(53, 53, 53))
+                .addGap(34, 34, 34)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCambiarEstado)
+                    .addComponent(jButton2))
+                .addGap(25, 25, 25))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -195,23 +194,69 @@ public class Pedido extends javax.swing.JFrame {
 
     private void modificarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarPedidoActionPerformed
         // TODO add your handling code here:
-        ModificarPedido modificarPedido = new ModificarPedido();
-        modificarPedido.setVisible(true);
-        this.dispose();
+        int selectedRow = jtable.getSelectedRow();
+        if (selectedRow != -1) {
+            
+            Long id= Long.parseLong(jtable.getValueAt(selectedRow, 0).toString());
+            PedidoDTO ped=new PedidoDTO();
+            ped.setId(id);
+            ped.setEstado(EstadoDTO.PREPARACION);
+            PedidoDTO conf= control.consultaPedido(ped);
+            
+            
+            ModificarPedido modificarPedido = new ModificarPedido(conf);
+            modificarPedido.setVisible(true);
+            this.dispose();
+        }else{
+            JOptionPane.showMessageDialog(null, "No ha seleccionado ningun pedido");
+        }
     }//GEN-LAST:event_modificarPedidoActionPerformed
 
     private void cancelarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarPedidoActionPerformed
         int selectedRow = jtable.getSelectedRow();
         if (selectedRow != -1) {
-            
+            Long id= Long.parseLong(jtable.getValueAt(selectedRow, 0).toString());
+            PedidoDTO ped=new PedidoDTO();
+            ped.setId(id);
+            ped.setEstado(EstadoDTO.PREPARACION);
+            PedidoDTO conf= control.cancelarPedido(ped);
+            if (conf!=null) {
+                JOptionPane.showMessageDialog(null, "No se ha cancelado");
+            }else{
+                JOptionPane.showMessageDialog(null, "Se ha cancelado");
+            }
         }else{
             JOptionPane.showMessageDialog(null, "No selecciono un pedido");
         }
     }//GEN-LAST:event_cancelarPedidoActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnCambiarEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarEstadoActionPerformed
+        int selectedRow = jtable.getSelectedRow();
+        if (selectedRow!=-1) {
+            Long id= Long.parseLong(jtable.getValueAt(selectedRow, 0).toString());
+            PedidoDTO ped=new PedidoDTO();
+            ped.setId(id);
+            ped.setEstado(EstadoDTO.LISTO);
+            ped=control.consultaPedido(ped);
+            if (ped!=null) {
+                if (ped.getEstado().equals(EstadoDTO.PREPARACION)) {
+                    ped.setEstado(EstadoDTO.LISTO);
+                    ped=control.actualizarPedido(ped);
+                    if (ped!=null) {
+                        JOptionPane.showMessageDialog(null, "Se ha cambiado de estado");
+                    }
+                }else if (ped.getEstado().equals(EstadoDTO.LISTO)) {
+                    ped.setEstado(EstadoDTO.ENTREGADO);
+                    ped=control.actualizarPedido(ped);
+                    if (ped!=null) {
+                        JOptionPane.showMessageDialog(null,"Se ha cambiado de estado");
+                    }
+                }else if (ped.getEstado().equals(EstadoDTO.ENTREGADO)) {
+                    JOptionPane.showMessageDialog(null, "Ya se ha entregado no hay mas estados");
+                }              
+            }
+        }
+    }//GEN-LAST:event_btnCambiarEstadoActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -285,9 +330,9 @@ public class Pedido extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCambiarEstado;
     private javax.swing.JButton cancelarPedido;
     private javax.swing.JButton crearPedido;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

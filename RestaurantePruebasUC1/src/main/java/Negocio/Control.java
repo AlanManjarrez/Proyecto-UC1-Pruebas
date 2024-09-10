@@ -39,8 +39,9 @@ public class Control {
         return null;
     }
     
-    public void consultaPedido(PedidoDTO pedido){
-        
+    public PedidoDTO consultaPedido(PedidoDTO pedido){
+        PedidoDTO ped=c.convPedidoDTO(p.consultarPedido(c.convPedido(pedido)));
+        return ped;
     }
     
     public PedidoDTO agregarPedido(PedidoDTO pedido){

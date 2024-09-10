@@ -6,6 +6,8 @@ package Presentacion;
 import DTO.PedidoDTO;
 import DTO.EstadoDTO;
 import Negocio.Control;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Calendar;
 import javax.swing.JOptionPane;
 /**
@@ -22,6 +24,17 @@ public class CrearPedido extends javax.swing.JFrame {
         initComponents();
         pedido= new PedidoDTO();
         control= new Control();
+        txtCantidad.addKeyListener(new KeyAdapter(){
+            @Override
+            public void keyTyped(KeyEvent e){
+                char c= e.getKeyChar();
+                if (!Character.isDigit(c)) {
+                    e.consume();
+                }
+            }
+            
+        });
+        
     }
 
     /**
@@ -177,8 +190,7 @@ public class CrearPedido extends javax.swing.JFrame {
         Calendar fecha= Calendar.getInstance();
         
         
-        if (!opcionSeleccion.equals("Selecciona un alimento") && !txtCantidad.getText().isEmpty()) {
-            //if () {
+        if (!opcionSeleccion.equals("Selecciona un alimento") && !txtCantidad.getText().isEmpty()) {            
                 pedido.setEstado(EstadoDTO.PREPARACION);
                 pedido.setFecha(fecha);
                 if (pedido.getAlimento()!=null) {
@@ -188,7 +200,6 @@ public class CrearPedido extends javax.swing.JFrame {
                     pedido.setAlimento(opcionSeleccion+" "+txtCantidad.getText());
                 }
                 JOptionPane.showMessageDialog(null, "Se ha agregado");
-            //}
         }else{
             JOptionPane.showMessageDialog(null, "No ha seleccionado un producto o cantidad");
         }

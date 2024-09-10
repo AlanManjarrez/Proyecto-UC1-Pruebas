@@ -110,6 +110,28 @@ public class PedidoDAO {
         return null; 
     }
     
-    
+    public Pedido consultarPedido(Pedido pedido){
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("conexionPU");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        
+        try {
+            entityManager.getTransaction().begin();
+            
+            Pedido pedidoManaged = entityManager.find(Pedido.class, pedido.getId());
+            
+            entityManager.getTransaction().commit();
+            return pedidoManaged;
+            
+        } catch (Exception e) {
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback(); 
+            }
+            e.printStackTrace(); 
+        }finally{
+            entityManager.close();
+            entityManagerFactory.close();
+        }
+        return null;
+    }
     
 }

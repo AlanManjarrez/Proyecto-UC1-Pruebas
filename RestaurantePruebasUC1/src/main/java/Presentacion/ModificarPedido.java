@@ -4,17 +4,24 @@
  */
 package Presentacion;
 
+import DTO.PedidoDTO;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+
 /**
  *
  * @author uirtis
  */
 public class ModificarPedido extends javax.swing.JFrame {
-
+    PedidoDTO ped;
     /**
      * Creates new form crearPedido
      */
-    public ModificarPedido() {
+    public ModificarPedido(PedidoDTO ped) {
         initComponents();
+        this.ped=ped;
+        llenarCombo();
     }
 
     /**
@@ -36,6 +43,7 @@ public class ModificarPedido extends javax.swing.JFrame {
         txtCantidad = new javax.swing.JTextField();
         agregarPedido = new javax.swing.JButton();
         cancelarPedido = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
 
         jLabel4.setText("jLabel4");
 
@@ -70,10 +78,27 @@ public class ModificarPedido extends javax.swing.JFrame {
         jLabel3.setText("Cantidad");
 
         cbAlimento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hamburguesa", "Pizza", "Ensalada", "Pasta" }));
+        cbAlimento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbAlimentoActionPerformed(evt);
+            }
+        });
 
-        agregarPedido.setText("Agregar");
+        agregarPedido.setText("Actualizar");
+        agregarPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarPedidoActionPerformed(evt);
+            }
+        });
 
         cancelarPedido.setText("Cancelar");
+        cancelarPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarPedidoActionPerformed(evt);
+            }
+        });
+
+        btnActualizar.setText("Actualizar por completo");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -94,15 +119,18 @@ public class ModificarPedido extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(cbAlimento, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(agregarPedido)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(cancelarPedido))
-                            .addComponent(cbAlimento, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(cancelarPedido)))
                         .addGap(47, 47, 47))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(122, 122, 122))))
+                        .addGap(122, 122, 122))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnActualizar)
+                        .addGap(116, 116, 116))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -116,11 +144,13 @@ public class ModificarPedido extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(agregarPedido)
                     .addComponent(cancelarPedido))
-                .addGap(39, 39, 39))
+                .addGap(18, 18, 18)
+                .addComponent(btnActualizar)
+                .addGap(19, 19, 19))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -137,10 +167,55 @@ public class ModificarPedido extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cbAlimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbAlimentoActionPerformed
+        
+    }//GEN-LAST:event_cbAlimentoActionPerformed
+
+    private void agregarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarPedidoActionPerformed
+        
+    }//GEN-LAST:event_agregarPedidoActionPerformed
+
+    private void cancelarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarPedidoActionPerformed
+        Pedido frmPedido=new Pedido();
+        frmPedido.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_cancelarPedidoActionPerformed
+
+    private void llenarCombo(){
+        cbAlimento.removeAllItems();
+        String[] alimentos = ped.getAlimento().split(", ");
+        
+        for (String alimento : alimentos) {
+            String[] partes = alimento.split(" "); 
+            if (partes.length == 2) {
+                String nombre = partes[0];
+                cbAlimento.addItem(nombre); 
+            }
+        }
+        
+        cbAlimento.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+                String alimentoSeleccionado = (String) cbAlimento.getSelectedItem();
+                if (alimentoSeleccionado != null) {
+                    
+                    for (String alimento : alimentos) {
+                        String[] partes = alimento.split(" ");
+                        if (partes[0].equals(alimentoSeleccionado)) {
+                            txtCantidad.setText(partes[1]); 
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+        
+    }
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregarPedido;
+    private javax.swing.JButton btnActualizar;
     private javax.swing.JButton cancelarPedido;
     private javax.swing.JComboBox<String> cbAlimento;
     private javax.swing.JLabel jLabel1;
