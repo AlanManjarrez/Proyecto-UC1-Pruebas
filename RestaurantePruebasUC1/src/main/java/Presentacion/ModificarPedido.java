@@ -5,23 +5,43 @@
 package Presentacion;
 
 import DTO.PedidoDTO;
+import Negocio.Control;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author uirtis
  */
 public class ModificarPedido extends javax.swing.JFrame {
-    PedidoDTO ped;
+    PedidoDTO ped, nuevoPed;
+    Control control;
+    private Map<String, Integer> cambiosAlimentos = new HashMap<>();
     /**
      * Creates new form crearPedido
      */
     public ModificarPedido(PedidoDTO ped) {
         initComponents();
         this.ped=ped;
+        nuevoPed=new PedidoDTO();
+        control=new Control();
         llenarCombo();
+        txtCantidad.addKeyListener(new KeyAdapter(){
+            @Override
+            public void keyTyped(KeyEvent e){
+                char c= e.getKeyChar();
+                if (!Character.isDigit(c)) {
+                    e.consume();
+                }
+            }
+            
+        });
     }
 
     /**
@@ -44,6 +64,7 @@ public class ModificarPedido extends javax.swing.JFrame {
         agregarPedido = new javax.swing.JButton();
         cancelarPedido = new javax.swing.JButton();
         btnActualizar = new javax.swing.JButton();
+        btnEliminarAlimento = new javax.swing.JButton();
 
         jLabel4.setText("jLabel4");
 
@@ -99,6 +120,18 @@ public class ModificarPedido extends javax.swing.JFrame {
         });
 
         btnActualizar.setText("Actualizar por completo");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
+
+        btnEliminarAlimento.setText("Eliminar alimento");
+        btnEliminarAlimento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarAlimentoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -126,11 +159,13 @@ public class ModificarPedido extends javax.swing.JFrame {
                                 .addComponent(cancelarPedido)))
                         .addGap(47, 47, 47))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(122, 122, 122))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(btnActualizar)
-                        .addGap(116, 116, 116))))
+                        .addGap(116, 116, 116))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnEliminarAlimento)
+                            .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(122, 122, 122))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,7 +179,9 @@ public class ModificarPedido extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addComponent(btnEliminarAlimento, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(agregarPedido)
                     .addComponent(cancelarPedido))
@@ -172,7 +209,22 @@ public class ModificarPedido extends javax.swing.JFrame {
     }//GEN-LAST:event_cbAlimentoActionPerformed
 
     private void agregarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarPedidoActionPerformed
-        
+         String alimentoSeleccionado = (String) cbAlimento.getSelectedItem();
+        String nuevaCantidadStr = txtCantidad.getText();
+
+        if (alimentoSeleccionado != null && !nuevaCantidadStr.isEmpty()) {
+            int nuevaCantidad = Integer.parseInt(nuevaCantidadStr);
+
+            
+            cambiosAlimentos.put(alimentoSeleccionado, nuevaCantidad);
+
+            JOptionPane.showMessageDialog(this, "Cambio agregado: " + alimentoSeleccionado + " - " + nuevaCantidad);
+
+            actualizarComboBox();
+            txtCantidad.setText("");
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor, selecciona un alimento y una cantidad válida.");
+        }
     }//GEN-LAST:event_agregarPedidoActionPerformed
 
     private void cancelarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarPedidoActionPerformed
@@ -180,6 +232,82 @@ public class ModificarPedido extends javax.swing.JFrame {
         frmPedido.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_cancelarPedidoActionPerformed
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        String cadenaAlimentos = ped.getAlimento();
+        String[] alimentos = cadenaAlimentos.split(", ");
+
+        StringBuilder nuevaCadena = new StringBuilder();
+
+        Map<String, Integer> alimentosActualizados = new HashMap<>();
+       
+        for (String alimento : alimentos) {
+            String[] partes = alimento.split(" ");
+            String nombre = partes[0];
+
+            
+            if (cambiosAlimentos.containsKey(nombre)) {
+                nuevaCadena.append(nombre).append(" ").append(cambiosAlimentos.get(nombre));
+                alimentosActualizados.put(nombre, cambiosAlimentos.get(nombre)); 
+            } else {
+                nuevaCadena.append(alimento);
+            }
+            nuevaCadena.append(", "); 
+        }
+
+        for (Map.Entry<String, Integer> entry : cambiosAlimentos.entrySet()) {
+            String nombre = entry.getKey();
+            if (!alimentosActualizados.containsKey(nombre)) {
+                nuevaCadena.append(nombre).append(" ").append(entry.getValue()).append(", ");
+            }
+        }
+
+        
+        if (nuevaCadena.length() > 0) {
+            nuevaCadena.setLength(nuevaCadena.length() - 2);
+        }
+
+        ped.setAlimento(nuevaCadena.toString());
+        control.actualizarPedido(ped);
+        
+        JOptionPane.showMessageDialog(this, "Todos los cambios han sido aplicados.");
+        actualizarComboBox();
+        
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnEliminarAlimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarAlimentoActionPerformed
+        String alimentoSeleccionado = (String) cbAlimento.getSelectedItem();
+
+        if (alimentoSeleccionado != null) {
+           
+            String cadenaAlimentos = ped.getAlimento();
+            String[] alimentos = cadenaAlimentos.split(", ");
+
+            if (alimentos.length <= 1) {
+                JOptionPane.showMessageDialog(this, "No se puede eliminar el único alimento en la lista.");
+                return; 
+            }
+
+            StringBuilder nuevaCadena = new StringBuilder();
+
+            for (String alimento : alimentos) {
+                if (!alimento.startsWith(alimentoSeleccionado + " ")) { 
+                    nuevaCadena.append(alimento).append(", ");
+                }
+            }
+
+            if (nuevaCadena.length() > 0) {
+                nuevaCadena.setLength(nuevaCadena.length() - 2);
+            }
+
+            ped.setAlimento(nuevaCadena.toString());
+            control.actualizarPedido(ped);
+            JOptionPane.showMessageDialog(this, "Alimento eliminado con éxito.");
+            actualizarComboBox();
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor, selecciona un alimento para eliminar.");
+        }
+    }//GEN-LAST:event_btnEliminarAlimentoActionPerformed
 
     private void llenarCombo(){
         cbAlimento.removeAllItems();
@@ -212,10 +340,22 @@ public class ModificarPedido extends javax.swing.JFrame {
         
     }
    
+    private void actualizarComboBox() {
+        
+        String cadenaAlimentos = ped.getAlimento();
+        String[] alimentos = cadenaAlimentos.split(", ");
+
+        cbAlimento.removeAllItems();
+
+        for (String alimento : alimentos) {
+            cbAlimento.addItem(alimento);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregarPedido;
     private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnEliminarAlimento;
     private javax.swing.JButton cancelarPedido;
     private javax.swing.JComboBox<String> cbAlimento;
     private javax.swing.JLabel jLabel1;

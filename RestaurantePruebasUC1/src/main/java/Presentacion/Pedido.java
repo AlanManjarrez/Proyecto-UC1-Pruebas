@@ -48,7 +48,7 @@ public class Pedido extends javax.swing.JFrame {
         modificarPedido = new javax.swing.JButton();
         cancelarPedido = new javax.swing.JButton();
         btnCambiarEstado = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnHistorial = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -119,10 +119,10 @@ public class Pedido extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Historial de ventas");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnHistorial.setText("Historial de pedidos");
+        btnHistorial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnHistorialActionPerformed(evt);
             }
         });
 
@@ -136,7 +136,7 @@ public class Pedido extends javax.swing.JFrame {
                 .addComponent(crearPedido)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(modificarPedido)
-                .addGap(107, 107, 107)
+                .addGap(102, 102, 102)
                 .addComponent(cancelarPedido)
                 .addGap(92, 92, 92))
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -145,7 +145,7 @@ public class Pedido extends javax.swing.JFrame {
                         .addGap(216, 216, 216)
                         .addComponent(btnCambiarEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(97, 97, 97)
-                        .addComponent(jButton2))
+                        .addComponent(btnHistorial))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(47, 47, 47)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 661, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -160,12 +160,12 @@ public class Pedido extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(crearPedido)
-                    .addComponent(modificarPedido)
-                    .addComponent(cancelarPedido))
+                    .addComponent(cancelarPedido)
+                    .addComponent(modificarPedido))
                 .addGap(34, 34, 34)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCambiarEstado)
-                    .addComponent(jButton2))
+                    .addComponent(btnHistorial))
                 .addGap(25, 25, 25))
         );
 
@@ -193,7 +193,6 @@ public class Pedido extends javax.swing.JFrame {
     }//GEN-LAST:event_crearPedidoActionPerformed
 
     private void modificarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarPedidoActionPerformed
-        // TODO add your handling code here:
         int selectedRow = jtable.getSelectedRow();
         if (selectedRow != -1) {
             
@@ -258,9 +257,11 @@ public class Pedido extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnCambiarEstadoActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btnHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorialActionPerformed
+        Historial frmHistorial=new Historial();
+        frmHistorial.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnHistorialActionPerformed
     
     private void llenarTabla(JTable table,List<PedidoDTO> pedidos){
         DefaultTableModel modelo=new DefaultTableModel();
@@ -331,9 +332,9 @@ public class Pedido extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCambiarEstado;
+    private javax.swing.JButton btnHistorial;
     private javax.swing.JButton cancelarPedido;
     private javax.swing.JButton crearPedido;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
