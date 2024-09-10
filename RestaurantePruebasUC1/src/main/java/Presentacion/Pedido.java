@@ -3,18 +3,30 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Presentacion;
+import Negocio.Control;
+import DTO.PedidoDTO;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author uirtis
  */
 public class Pedido extends javax.swing.JFrame {
-
+    Control control;
+    
     /**
      * Creates new form Menu
      */
     public Pedido() {
         initComponents();
+        control=new Control();
+        Calendar fecha=Calendar.getInstance();
+        llenarTabla(jtable,control.consultarPedidos(fecha));
     }
 
     /**
@@ -30,7 +42,7 @@ public class Pedido extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jtable = new javax.swing.JTable();
         crearPedido = new javax.swing.JButton();
         modificarPedido = new javax.swing.JButton();
         cancelarPedido = new javax.swing.JButton();
@@ -63,7 +75,7 @@ public class Pedido extends javax.swing.JFrame {
                 .addContainerGap(27, Short.MAX_VALUE))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -74,7 +86,7 @@ public class Pedido extends javax.swing.JFrame {
                 "Alimento", "Estado", "Cantidad", "Detalles", "Fecha"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jtable);
 
         crearPedido.setText("Crear Pedido");
         crearPedido.addActionListener(new java.awt.event.ActionListener() {
@@ -91,6 +103,11 @@ public class Pedido extends javax.swing.JFrame {
         });
 
         cancelarPedido.setText("Cancelar Pedido");
+        cancelarPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarPedidoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -153,6 +170,44 @@ public class Pedido extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_modificarPedidoActionPerformed
 
+    private void cancelarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarPedidoActionPerformed
+        int selectedRow = jtable.getSelectedRow();
+        if (selectedRow != -1) {
+            
+        }else{
+            JOptionPane.showMessageDialog(null, "No selecciono un pedido");
+        }
+    }//GEN-LAST:event_cancelarPedidoActionPerformed
+    
+    private void llenarTabla(JTable table,List<PedidoDTO> pedidos){
+        DefaultTableModel modelo=new DefaultTableModel();
+        modelo.addColumn("Número de Pedido");
+        modelo.addColumn("Fecha");
+        modelo.addColumn("Alimento");
+        modelo.addColumn("Cantidad");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    
+        for (PedidoDTO pedido : pedidos) {
+            Calendar fecha = pedido.getFecha();
+            String fechaFormateada = sdf.format(fecha.getTime());
+            
+            String[] alimentos = pedido.getAlimento().split(", ");
+            for (String alimento : alimentos) {
+                String[] partes = alimento.split(" "); // Separar nombre y cantidad
+                String nombre = partes[0]; // Nombre del alimento
+                String cantidad = partes[1]; // Cantidad del alimento
+
+                // Agregar fila al modelo
+                modelo.addRow(new Object[]{
+                    pedido.getId(),
+                    fechaFormateada,
+                    nombre,
+                    cantidad
+                });
+            }
+        }
+        table.setModel(modelo);
+    }
     /**
      * @param args the command line arguments
      */
@@ -198,7 +253,7 @@ public class Pedido extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jtable;
     private javax.swing.JButton modificarPedido;
     // End of variables declaration//GEN-END:variables
 }

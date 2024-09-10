@@ -23,6 +23,6 @@ public class PruebasPersistencia {
         Pedido pedido3 = new Pedido(Estado.ENTREGADO, "Hamburguesa 8, dudhi 5, Ensalada 1", fecha);
         pedido3.setId(2L);
         PedidoDAO p=new PedidoDAO();
-        p.actualizarPedido(pedido3);
+        p.agregarPedido(pedido3);
     }
 }

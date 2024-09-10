@@ -17,9 +17,13 @@ import java.util.ArrayList;
  * @author JESUS
  */
 public class Control {
-    
     PedidoDAO p;
-    Convertidor c=new Convertidor();
+    Convertidor c;
+    public Control(){
+        p=new PedidoDAO();
+        c=new Convertidor();
+    }
+    
     
     public List<PedidoDTO> consultarPedidos(Calendar fecha){
         List<PedidoDTO> pedidosFiltrados = new ArrayList<>();

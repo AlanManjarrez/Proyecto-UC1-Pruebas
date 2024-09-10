@@ -5,17 +5,23 @@
 package Presentacion;
 import DTO.PedidoDTO;
 import DTO.EstadoDTO;
+import Negocio.Control;
+import java.util.Calendar;
+import javax.swing.JOptionPane;
 /**
  *
  * @author uirtis
  */
 public class CrearPedido extends javax.swing.JFrame {
-
+    PedidoDTO pedido;
+    Control control;
     /**
      * Creates new form crearPedido
      */
     public CrearPedido() {
         initComponents();
+        pedido= new PedidoDTO();
+        control= new Control();
     }
 
     /**
@@ -71,7 +77,7 @@ public class CrearPedido extends javax.swing.JFrame {
 
         jLabel3.setText("Cantidad");
 
-        cbAlimento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hamburguesa", "Pizza", "Ensalada", "Pasta" }));
+        cbAlimento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona un alimento", "Hamburguesa", "Pizza", "Ensalada", "Pasta" }));
 
         agregarPedido.setText("Agregar");
         agregarPedido.addActionListener(new java.awt.event.ActionListener() {
@@ -161,22 +167,46 @@ public class CrearPedido extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarPedidoActionPerformed
-        // TODO add your handling code here:
+        Pedido frmPedido=new Pedido();
+        frmPedido.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_cancelarPedidoActionPerformed
 
     private void agregarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarPedidoActionPerformed
         Object opcionSeleccion=cbAlimento.getSelectedItem();
-        if (opcionSeleccion!=null && txtCantidad.getText()!=null) {
-            
+        Calendar fecha= Calendar.getInstance();
+        
+        
+        if (!opcionSeleccion.equals("Selecciona un alimento") && !txtCantidad.getText().isEmpty()) {
+            //if () {
+                pedido.setEstado(EstadoDTO.PREPARACION);
+                pedido.setFecha(fecha);
+                if (pedido.getAlimento()!=null) {
+                    pedido.setAlimento(pedido.getAlimento()+", "+opcionSeleccion+" "+txtCantidad.getText());
+                    
+                }else{
+                    pedido.setAlimento(opcionSeleccion+" "+txtCantidad.getText());
+                }
+                JOptionPane.showMessageDialog(null, "Se ha agregado");
+            //}
         }else{
-            
+            JOptionPane.showMessageDialog(null, "No ha seleccionado un producto o cantidad");
         }
               
                 
     }//GEN-LAST:event_agregarPedidoActionPerformed
 
     private void btnTerminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTerminarActionPerformed
-        // TODO add your handling code here:
+        if (pedido==null) {
+            JOptionPane.showMessageDialog(null, "Usted no ha agregado nada al pedido");
+        }else{
+            control.agregarPedido(pedido);
+            JOptionPane.showMessageDialog(null, "Se ha realizado el pedido");
+            Pedido frmPedido = new Pedido();
+            frmPedido.setVisible(true);
+            this.dispose();
+        }
+        
     }//GEN-LAST:event_btnTerminarActionPerformed
 
    
